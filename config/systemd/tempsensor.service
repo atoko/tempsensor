@@ -1,0 +1,12 @@
+[Unit]
+Description=Tempsensor
+After=network-online.target
+
+[Service]
+User=pi
+Restart=on-failure
+Type=simple
+ExecStart=/usr/bin/node /home/pi/humidlog/tempsensor/main.js
+
+[Install]
+WantedBy=multi-user.target

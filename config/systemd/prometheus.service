@@ -1,0 +1,15 @@
+[Unit]
+Description=Prometheus Server
+Documentation=https://prometheus.io/docs/introduction/overview/
+After=network-online.target
+
+[Service]
+User=pi
+Restart=on-failure
+
+ExecStart=/home/pi/humidlog/prometheus/prometheus \
+  --config.file=/home/pi/humidlog/prometheus/prometheus.yml \
+  --storage.tsdb.path=/home/pi/humidlog/prometheus/data
+
+[Install]
+WantedBy=multi-user.target

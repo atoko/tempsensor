@@ -30,5 +30,31 @@ class SensorReader {
 
 tm.text = "init";
 let reader = new SensorReader();
+setTimeout(() => {reader.read()}, 3000);
 
-setTimeout(() => {reader.read()}, 1000);
+const prometheus = require('prom-client');
+new prometheus.Gauge({
+	name: 'tempsensor_DHT22_temperature',
+	help: `Temperature from DHT22 on ${SENSOR_PIN}`,
+	collect() {
+		this.set(reader.temp);
+	}
+});
+new prometheus.Gauge({
+	name: 'tempsensor_DHT22_humidity',
+	help: `Humidity from DHT22 on ${SENSOR_PIN}`,
+	collect() {
+		this.set(reader.humidity);
+	}
+});
+
+const httpServer = require('express')();
+const PORT = 5555;
+httpServer.get('/metrics', async (req, res) => {
+	let metrics = await prometheus.register.metrics();
+	res.send(metrics);
+});
+
+httpServer.listen(PORT, () => {
+	console.log(`Server started, listening at port ${PORT}`)
+});

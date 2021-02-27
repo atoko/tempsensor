@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
     "node-dht-sensor": "^0.4.3",
     "prom-client": "^13.1.0",
     "raspberrypi-tm1637": "^1.1.0"
